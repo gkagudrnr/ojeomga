@@ -1833,8 +1833,28 @@
 
   // ============ 다다익스 검색 헬퍼 함수 ============
   // 여러 키워드로 검색하고 결과 합쳐서 반환
+  // ============ 네이버 검색 (Netlify Function 호출) ============
+  function searchNaver(keyword) {
+    return fetch(`/.netlify/functions/naver-search?query=${encodeURIComponent(keyword)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('네이버 검색 실패');
+        return response.json();
+      })
+      .then(data => {
+        if (data.success && data.places) {
+          return data.places;
+        }
+        return [];
+      })
+      .catch(error => {
+        console.warn('네이버 검색 오류:', error);
+        return [];  // 실패해도 빈 배열 반환 (전체 검색은 계속)
+      });
+  }
+
+  // ============ 다다익스 검색 (카카오 + 네이버) ============
   function multiKeywordSearch(baseRegion, callback) {
-    // 지역명에서 "한식뷔페" 같은 기본 키워드 제거
+    // 지역명 정리
     const cleanRegion = baseRegion
       .replace(/한식뷔페/g, '')
       .replace(/한정식/g, '')
@@ -1842,35 +1862,69 @@
       .replace(/가정식/g, '')
       .trim();
     
-    // 4가지 한식 키워드로 검색
+    // 카카오 4가지 키워드
     const keywords = ['한식뷔페', '한정식', '백반', '가정식'];
     const queries = keywords.map(kw => `${cleanRegion} ${kw}`);
     
     const allResults = [];
     const seenIds = new Set();
-    let completedCount = 0;
+    const seenNames = new Set();  // 이름 기반 중복 제거 (네이버 vs 카카오)
+    let kakaoCompletedCount = 0;
+    let naverCompleted = false;
     
+    // 검색 결과 합치는 함수
+    function tryFinishCallback() {
+      if (kakaoCompletedCount === queries.length && naverCompleted) {
+        callback(allResults, cleanRegion);
+      }
+    }
+    
+    // 결과 추가 (중복 제거)
+    function addPlace(place) {
+      // 이름 + 주소 기반 중복 체크 (다른 소스에서 같은 가게일 수 있음)
+      const nameKey = (place.place_name + (place.road_address_name || place.address_name || '')).replace(/\s/g, '');
+      if (seenIds.has(place.id) || seenNames.has(nameKey)) return;
+      
+      seenIds.add(place.id);
+      seenNames.add(nameKey);
+      allResults.push(place);
+    }
+    
+    // === 카카오 검색 (4가지 키워드) ===
     queries.forEach(query => {
       placesService.keywordSearch(query, function(data, status) {
-        completedCount++;
+        kakaoCompletedCount++;
         
         if (status === kakao.maps.services.Status.OK) {
-          // 중복 제거 (id 기준)
-          data.forEach(place => {
-            if (!seenIds.has(place.id)) {
-              seenIds.add(place.id);
-              allResults.push(place);
-            }
-          });
+          data.forEach(place => addPlace(place));
         }
         
-        // 모든 검색이 끝났을 때 콜백 실행
-        if (completedCount === queries.length) {
-          callback(allResults, cleanRegion);
-        }
+        tryFinishCallback();
       }, { size: 15 });
     });
+    
+    // === 네이버 검색 (3가지 키워드 동시) ===
+    const naverQueries = [
+      `${cleanRegion} 한식뷔페`,
+      `${cleanRegion} 한정식`,
+      `${cleanRegion} 백반`
+    ];
+    
+    Promise.all(naverQueries.map(q => searchNaver(q)))
+      .then(results => {
+        // 모든 네이버 결과 합치기
+        results.forEach(places => {
+          places.forEach(place => addPlace(place));
+        });
+        naverCompleted = true;
+        tryFinishCallback();
+      })
+      .catch(() => {
+        naverCompleted = true;
+        tryFinishCallback();
+      });
   }
+
 
   // ============ 일반 키워드 검색 (지역 검색용) - 다다익스 적용 ============
   function searchKeyword(keyword) {
@@ -1898,7 +1952,11 @@
       });
       map.setBounds(bounds);
       
-      infoEl.innerHTML = `✓ "${cleanRegion}" 한식뷔페·한정식·백반 ${limited.length}곳을 찾았어요. 마커를 클릭해보세요.`;
+      // 카카오/네이버 비율 계산
+      const naverCount = limited.filter(p => p.source === 'naver').length;
+      const kakaoCount = limited.length - naverCount;
+      
+      infoEl.innerHTML = `✓ "${cleanRegion}" 한식뷔페·한정식 ${limited.length}곳을 찾았어요. (카카오 ${kakaoCount}곳 + 네이버 ${naverCount}곳)`;
       infoEl.classList.add('success');
       
       // 하단 영역도 업데이트
@@ -1996,19 +2054,35 @@
     const categoryName = place.category_name 
       ? place.category_name.split('>').slice(-2).join(' › ').trim()
       : '한식뷔페';
-    const kakaoMapUrl = place.place_url || `https://map.kakao.com/link/search/${encodeURIComponent(place.place_name)}`;
-    const kakaoSearchUrl = `https://map.kakao.com/link/search/${encodeURIComponent(place.place_name + ' ' + (place.road_address_name || ''))}`;
+    
+    // 출처 뱃지 (카카오 / 네이버)
+    const isNaver = place.source === 'naver';
+    const sourceBadge = isNaver 
+      ? '<span style="background:#03C75A;color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:700;">N</span>'
+      : '<span style="background:#FFEB00;color:#3C1E1E;font-size:9px;padding:2px 6px;border-radius:4px;margin-left:6px;font-weight:700;">K</span>';
+    
+    // 검색/길찾기 URL (출처별로 다르게)
+    let detailUrl, directionUrl;
+    if (isNaver) {
+      // 네이버 가게면 네이버 검색으로
+      detailUrl = place.place_url || `https://search.naver.com/search.naver?query=${encodeURIComponent(place.place_name)}`;
+      directionUrl = `https://map.naver.com/v5/search/${encodeURIComponent(place.place_name + ' ' + (place.road_address_name || ''))}`;
+    } else {
+      // 카카오 가게면 카카오 검색으로
+      detailUrl = place.place_url || `https://map.kakao.com/link/search/${encodeURIComponent(place.place_name)}`;
+      directionUrl = `https://map.kakao.com/link/search/${encodeURIComponent(place.place_name + ' ' + (place.road_address_name || ''))}`;
+    }
 
     const content = `
       <div class="infowindow-content">
-        ${rankBadge}
+        ${rankBadge}${sourceBadge}
         <div class="infowindow-name">${place.place_name}</div>
         <div class="infowindow-category">📍 ${categoryName}</div>
         <div class="infowindow-addr">${place.road_address_name || place.address_name}</div>
         ${place.phone ? `<a href="tel:${place.phone}" class="infowindow-phone">📞 ${place.phone}</a>` : ''}
         <div class="infowindow-actions">
-          <a href="${kakaoMapUrl}" target="_blank" class="infowindow-btn primary">사진·후기 보기</a>
-          <a href="${kakaoSearchUrl}" target="_blank" class="infowindow-btn secondary">길찾기</a>
+          <a href="${detailUrl}" target="_blank" class="infowindow-btn primary">사진·후기 보기</a>
+          <a href="${directionUrl}" target="_blank" class="infowindow-btn secondary">길찾기</a>
         </div>
       </div>`;
     
