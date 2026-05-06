@@ -922,9 +922,10 @@
       bottom: 0;
       z-index: 100;
     }
-    .bottom-nav-item { text-align: center; cursor: pointer; padding: 4px 0; }
-    .bottom-nav-icon { font-size: 20px; }
-    .bottom-nav-label { font-size: 10px; color: var(--gray-500); margin-top: 2px; font-weight: 500; }
+    .bottom-nav-item { text-align: center; cursor: pointer; padding: 4px 0; color: var(--gray-500); }
+    .bottom-nav-icon { display: flex; justify-content: center; align-items: center; height: 22px; }
+    .bottom-nav-label { font-size: 10px; color: var(--gray-500); margin-top: 4px; font-weight: 500; }
+    .bottom-nav-item.active { color: var(--red); }
     .bottom-nav-item.active .bottom-nav-label { color: var(--red); font-weight: 700; }
     body { padding-bottom: 66px; }
   }
@@ -960,9 +961,9 @@
     <div class="hero-image"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <span class="hero-tag">🔥 전국 한식뷔페 푸드맵</span>
-      <h1 class="hero-title">오늘 점심,<br><span class="accent">가성비</span>로 끝내자</h1>
-      <p class="hero-desc">검증된 한식뷔페 8,247곳 · 매주 자동 갱신<br>폐업 식당 없는 진짜 살아있는 한식뷔페만 모았어요</p>
+      <span class="hero-tag">전국 한식뷔페 지도</span>
+      <h1 class="hero-title">오늘 점심,<br><span class="accent">가성비</span>로</h1>
+      <p class="hero-desc">전국 한식뷔페를 지도 한 장에<br>위치, 메뉴, 가격까지 한 번에 확인하세요</p>
     </div>
   </section>
 
@@ -971,20 +972,20 @@
     <div class="search-bar">
       <input type="text" id="search-input" placeholder="지역, 식당명 검색 (예: 강남, 마곡, 노량진)" 
         onkeydown="if(event.key==='Enter') performSearch()">
-      <button class="btn-search" onclick="performSearch()">🔍 검색</button>
+      <button class="btn-search" onclick="performSearch()">검색</button>
     </div>
     <div class="filter-chips">
-      <span class="chip active" onclick="searchNearMe(this)">📍 내 주변</span>
-      <span class="chip" onclick="showComingSoon('가격 필터')">💰 1만원 이하</span>
-      <span class="chip" onclick="showComingSoon('HOT 필터')">🔥 HOT</span>
-      <span class="chip" onclick="showComingSoon('자연후기 필터')">✓ 자연후기</span>
-      <span class="chip" onclick="showComingSoon('신규 필터')">🚀 신규</span>
+      <span class="chip active" onclick="searchNearMe(this)">내 주변</span>
+      <span class="chip" onclick="showComingSoon('가격 필터')">1만원 이하</span>
+      <span class="chip" onclick="showComingSoon('HOT 필터')">인기</span>
+      <span class="chip" onclick="showComingSoon('자연후기 필터')">자연후기</span>
+      <span class="chip" onclick="showComingSoon('신규 필터')">신규</span>
     </div>
 
     <!-- 행정구역 선택 (시/도 → 시/군/구 → 읍/면/동) -->
     <div class="region-selector">
       <p class="region-selector-title">
-        📍 정확한 지역으로 검색
+        정확한 지역으로 검색
         <small>시/도 → 시/군/구 → 읍/면/동 순서로 선택하세요</small>
       </p>
       <div class="region-dropdowns">
@@ -997,7 +998,7 @@
         <select id="select-emd" class="region-select" disabled>
           <option value="">읍/면/동</option>
         </select>
-        <button class="btn-region-search" onclick="searchByRegionSelector()">🔍 이 지역 검색</button>
+        <button class="btn-region-search" onclick="searchByRegionSelector()">이 지역 검색</button>
       </div>
     </div>
   </section>
@@ -1022,17 +1023,17 @@
   <section class="map-section">
     <div class="section-head">
       <div>
-        <p class="section-tag">🗺️ MAP VIEW</p>
+        <p class="section-tag">지도</p>
         <h2 class="section-title">한식뷔페 검색 지도</h2>
         <p class="section-sub">위에서 검색하면 결과가 지도에 표시돼요</p>
       </div>
     </div>
 
     <div class="legend">
-      <p class="legend-title">📍 마커</p>
+      <p class="legend-title">마커 안내</p>
       <div class="legend-item">
         <div class="legend-dot" style="background:#FF5252;color:#FF5252;"></div>
-        <span class="legend-text"><strong>🔥 HOT 1위</strong></span>
+        <span class="legend-text"><strong>1순위</strong></span>
       </div>
       <div class="legend-item">
         <div class="legend-dot" style="background:#FF7575;color:#FF7575;"></div>
@@ -1059,7 +1060,7 @@
   <section class="block" id="trending">
     <div class="section-head">
       <div>
-        <p class="section-tag">🔍 LIVE FROM KAKAO</p>
+        <p class="section-tag">실시간</p>
         <h2 class="section-title" id="trending-title">서울 인기 한식뷔페 TOP 5</h2>
         <p class="section-sub">카카오맵 실시간 데이터 · 클릭하면 지도에서 확인</p>
       </div>
@@ -1069,7 +1070,7 @@
     <div class="trending" id="trending-list">
       <!-- 카카오에서 자동으로 채워짐 -->
       <div style="padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">
-        🔍 카카오맵에서 실시간 데이터 가져오는 중...
+        카카오맵에서 실시간 데이터 가져오는 중...
       </div>
     </div>
     <button class="btn-full" onclick="document.getElementById('search-input').focus()">다른 지역 검색하기 →</button>
@@ -1079,7 +1080,7 @@
   <section class="block">
     <div class="section-head">
       <div>
-        <p class="section-tag">📍 BY REGION</p>
+        <p class="section-tag">지역별</p>
         <h2 class="section-title">지역별 한식뷔페</h2>
       </div>
       <a class="section-link">전체 →</a>
@@ -1116,7 +1117,7 @@
   <section class="block">
     <div class="section-head">
       <div>
-        <p class="section-tag" style="color:#FF5252;">📍 NEAR YOU</p>
+        <p class="section-tag" style="color:#FF5252;">내 주변</p>
         <h2 class="section-title" id="hot-title">강남 인기 한식뷔페</h2>
         <p class="section-sub">카카오맵 평점 순 · 클릭하면 지도에서 위치 확인</p>
       </div>
@@ -1125,7 +1126,7 @@
     <div class="hot-grid" id="hot-list">
       <!-- 카카오에서 자동으로 채워짐 -->
       <div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">
-        🔍 카카오맵에서 실시간 데이터 가져오는 중...
+        카카오맵에서 실시간 데이터 가져오는 중...
       </div>
     </div>
     <p class="image-disclaimer">※ 이미지는 한식뷔페 분위기를 표현한 예시입니다. 사장님이 직접 등록하면 실제 사진으로 교체돼요.</p>
@@ -1173,23 +1174,33 @@
   <!-- BOTTOM NAV (mobile) -->
   <nav class="bottom-nav">
     <div class="bottom-nav-item active">
-      <div class="bottom-nav-icon">🏠</div>
+      <div class="bottom-nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
       <p class="bottom-nav-label">홈</p>
     </div>
     <div class="bottom-nav-item" onclick="document.getElementById('search-input').focus()">
-      <div class="bottom-nav-icon">🔍</div>
+      <div class="bottom-nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
       <p class="bottom-nav-label">검색</p>
     </div>
     <div class="bottom-nav-item" onclick="document.getElementById('kakao-map').scrollIntoView({behavior:'smooth'})">
-      <div class="bottom-nav-icon">🗺️</div>
+      <div class="bottom-nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+      </div>
       <p class="bottom-nav-label">지도</p>
     </div>
     <div class="bottom-nav-item">
-      <div class="bottom-nav-icon">♡</div>
+      <div class="bottom-nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </div>
       <p class="bottom-nav-label">찜한곳</p>
     </div>
     <div class="bottom-nav-item">
-      <div class="bottom-nav-icon">👤</div>
+      <div class="bottom-nav-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
       <p class="bottom-nav-label">마이</p>
     </div>
   </nav>
@@ -1226,7 +1237,7 @@
       searchKeyword('서울 한식뷔페');
     }, 300);
     
-    showToast('🏠 홈으로 돌아왔어요');
+    showToast('홈으로 돌아왔어요');
   }
 
   // ============ 토스트 메시지 (작은 알림) ============
@@ -1261,12 +1272,18 @@
     document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
     chipElement.classList.add('active');
     
+    // 지도 섹션으로 부드럽게 스크롤 이동
+    const mapEl = document.getElementById('kakao-map');
+    if (mapEl) {
+      mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    
     if (!navigator.geolocation) {
-      showToast('⚠️ 이 브라우저는 위치 기능을 지원하지 않아요');
+      showToast('이 브라우저는 위치 기능을 지원하지 않아요');
       return;
     }
     
-    showToast('📍 위치를 받아오는 중...');
+    showToast('위치를 받아오는 중...');
     
     navigator.geolocation.getCurrentPosition(
       // 성공
@@ -1282,12 +1299,12 @@
       // 실패 (권한 거부 등)
       function(error) {
         if (error.code === error.PERMISSION_DENIED) {
-          showToast('⚠️ 위치 권한을 허용해주세요. 또는 지역을 직접 검색해주세요.');
+          showToast('위치 권한을 허용해주세요. 또는 지역을 직접 검색해주세요.');
         } else {
-          showToast('⚠️ 위치를 받아올 수 없어요. 지역을 직접 검색해주세요.');
+          showToast('위치를 받아올 수 없어요. 지역을 직접 검색해주세요.');
         }
       },
-      { timeout: 10000, maximumAge: 60000 }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   }
 
@@ -1297,12 +1314,19 @@
     
     const infoEl = document.getElementById('search-info');
     infoEl.classList.remove('success', 'error');
-    infoEl.innerHTML = '🔍 내 주변 한식뷔페 찾는 중...';
+    infoEl.innerHTML = '내 주변 한식뷔페 찾는 중...';
     
-    // 지도 중심을 사용자 위치로
+    // 지도 중심을 사용자 위치로 + 동네 단위로 딥하게 줌인 (레벨 3 = 동 단위)
     const userPos = new kakao.maps.LatLng(lat, lng);
     map.setCenter(userPos);
-    map.setLevel(4);  // 동 단위
+    map.setLevel(3);  // 3 = 동/블록 단위 (작을수록 더 줌인)
+    
+    // 지도 리사이즈 보정 (스크롤 후 카카오맵이 영역 못 잡는 케이스 방지)
+    setTimeout(() => {
+      map.relayout();
+      map.setCenter(userPos);
+      map.setLevel(3);
+    }, 300);
     
     // 사용자 위치 마커 (파란색)
     const userMarkerSvg = `
@@ -1345,14 +1369,15 @@
         if (completedCount === keywords.length) {
           // 모든 검색 완료
           if (allResults.length === 0) {
-            infoEl.innerHTML = '😢 주변에 한식뷔페가 없어요. 지역을 직접 검색해보세요.';
+            infoEl.innerHTML = '주변에 한식뷔페가 없어요. 지역을 직접 검색해보세요.';
             infoEl.classList.add('error');
             return;
           }
           
           // 거리 기준으로 정렬
           allResults.sort((a, b) => parseInt(a.distance) - parseInt(b.distance));
-          const limited = allResults.slice(0, 30);
+          // 동네 단위로 보여주기 위해 가까운 15개만 (멀리 있는 거 표시하면 자동으로 시야 넓어짐)
+          const limited = allResults.slice(0, 15);
           
           // 마커 표시 (사용자 마커는 유지)
           clearMarkers();
@@ -1363,7 +1388,11 @@
             displayMarker(place, index);
           });
           
-          infoEl.innerHTML = `📍 내 위치 주변 한식뷔페 ${limited.length}곳을 찾았어요. (거리순 정렬)`;
+          // 중요: 마커 그린 뒤에도 사용자 위치 중심으로 다시 고정 (광역지도 방지)
+          map.setCenter(userPos);
+          map.setLevel(3);
+          
+          infoEl.innerHTML = `내 위치 주변 한식뷔페 ${limited.length}곳을 찾았어요. (거리순 정렬)`;
           infoEl.classList.add('success');
           
           // 하단 영역도 업데이트
@@ -1372,7 +1401,7 @@
         }
       }, { 
         location: userPos,
-        radius: 3000,  // 3km 반경
+        radius: 1500,  // 1.5km 반경 (3km는 너무 넓어서 광역으로 보임)
         sort: kakao.maps.services.SortBy.DISTANCE,
         size: 15
       });
@@ -1633,7 +1662,7 @@
     initRegionSelector();
     
     if (typeof kakao === 'undefined') {
-      document.getElementById('search-info').innerHTML = '⚠️ 카카오맵을 불러올 수 없어요.';
+      document.getElementById('search-info').innerHTML = '카카오맵을 불러올 수 없어요.';
       document.getElementById('search-info').classList.add('error');
       return;
     }
@@ -1662,7 +1691,7 @@
     const listEl = document.getElementById('trending-list');
     const titleEl = document.getElementById('trending-title');
     
-    listEl.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">🔍 카카오맵에서 데이터 가져오는 중...</div>`;
+    listEl.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">카카오맵에서 데이터 가져오는 중...</div>`;
     
     // 검색어 결정
     let displayLabel;
@@ -1681,7 +1710,7 @@
     // 다다익스 검색
     multiKeywordSearch(displayLabel, function(allResults, cleanRegion) {
       if (allResults.length === 0) {
-        listEl.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">😢 "${displayLabel}" 데이터를 찾을 수 없어요.</div>`;
+        listEl.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">"${displayLabel}" 데이터를 찾을 수 없어요.</div>`;
         return;
       }
       
@@ -1746,7 +1775,7 @@
     const listEl = document.getElementById('hot-list');
     const titleEl = document.getElementById('hot-title');
     
-    listEl.innerHTML = `<div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">🔍 카카오맵에서 데이터 가져오는 중...</div>`;
+    listEl.innerHTML = `<div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">카카오맵에서 데이터 가져오는 중...</div>`;
     
     let displayLabel;
     if (regionKeyword) {
@@ -1761,7 +1790,7 @@
     
     multiKeywordSearch(displayLabel, function(allResults, cleanRegion) {
       if (allResults.length === 0) {
-        listEl.innerHTML = `<div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">😢 "${displayLabel}" 데이터를 찾을 수 없어요.</div>`;
+        listEl.innerHTML = `<div style="grid-column: 1 / -1; padding: 40px 20px; text-align: center; color: var(--gray-500); font-size: 13px;">"${displayLabel}" 데이터를 찾을 수 없어요.</div>`;
         return;
       }
       
@@ -1777,15 +1806,15 @@
         return `
           <div class="hot-card" data-place-idx="${idx}">
             <div class="hot-image" style="background-image:url('${cardImages[idx]}')">
-              <span class="hot-rank-badge">🔥 ${idx + 1}위</span>
-              ${idx === 0 ? `<span class="hot-cert-badge">📍 ${displayLabel}</span>` : ''}
-              <p class="hot-photo-count">📞 ${place.phone || '전화번호 없음'}</p>
+              <span class="hot-rank-badge">${idx + 1}위</span>
+              ${idx === 0 ? `<span class="hot-cert-badge">${displayLabel}</span>` : ''}
+              <p class="hot-photo-count">${place.phone || '전화번호 없음'}</p>
             </div>
             <div class="hot-info">
               <p class="hot-name">${place.place_name}</p>
               <p class="hot-meta">${region}</p>
               <div class="hot-stats">
-                <span class="hot-rating">📍 위치 확인</span>
+                <span class="hot-rating">위치 확인</span>
                 <span class="hot-natural">카카오 등록</span>
               </div>
             </div>
@@ -1931,12 +1960,12 @@
     if (!placesService) return;
     const infoEl = document.getElementById('search-info');
     infoEl.classList.remove('success', 'error');
-    infoEl.innerHTML = '🔍 다양한 한식 키워드로 검색 중...';
+    infoEl.innerHTML = '다양한 한식 키워드로 검색 중...';
 
     multiKeywordSearch(keyword, function(allResults, cleanRegion) {
       if (allResults.length === 0) {
         clearMarkers();
-        infoEl.innerHTML = `😢 "${cleanRegion}" 검색 결과가 없어요. 다른 지역으로 검색해보세요.`;
+        infoEl.innerHTML = `"${cleanRegion}" 검색 결과가 없어요. 다른 지역으로 검색해보세요.`;
         infoEl.classList.add('error');
         return;
       }
@@ -1956,7 +1985,7 @@
       const naverCount = limited.filter(p => p.source === 'naver').length;
       const kakaoCount = limited.length - naverCount;
       
-      infoEl.innerHTML = `✓ "${cleanRegion}" 한식뷔페·한정식 ${limited.length}곳을 찾았어요. (카카오 ${kakaoCount}곳 + 네이버 ${naverCount}곳)`;
+      infoEl.innerHTML = `"${cleanRegion}" 한식뷔페·한정식 ${limited.length}곳을 찾았어요. (카카오 ${kakaoCount}곳 + 네이버 ${naverCount}곳)`;
       infoEl.classList.add('success');
       
       // 하단 영역도 업데이트
@@ -1990,13 +2019,13 @@
         }
       }, 600);
       
-      infoEl.innerHTML = `📍 "${placeData.place_name}" 위치를 표시했어요. 정보창에서 사진·후기를 볼 수 있어요.`;
+      infoEl.innerHTML = `"${placeData.place_name}" 위치를 표시했어요. 정보창에서 사진·후기를 볼 수 있어요.`;
       infoEl.classList.add('success');
       return;
     }
     
     // 이름만 있는 경우 → 검색 후 첫 결과 사용
-    infoEl.innerHTML = `🔍 "${placeName}" 위치 찾는 중...`;
+    infoEl.innerHTML = `"${placeName}" 위치 찾는 중...`;
     placesService.keywordSearch(placeName, function(data, status) {
       if (status === kakao.maps.services.Status.OK && data.length > 0) {
         clearMarkers();
@@ -2017,10 +2046,10 @@
           }
         }, 600);
         
-        infoEl.innerHTML = `📍 "${targetPlace.place_name}" 위치를 표시했어요. 정보창에서 사진·후기를 볼 수 있어요.`;
+        infoEl.innerHTML = `"${targetPlace.place_name}" 위치를 표시했어요. 정보창에서 사진·후기를 볼 수 있어요.`;
         infoEl.classList.add('success');
       } else {
-        infoEl.innerHTML = `😢 "${placeName}"을 찾을 수 없어요.`;
+        infoEl.innerHTML = `"${placeName}"을 찾을 수 없어요.`;
         infoEl.classList.add('error');
       }
     }, { size: 5 });
@@ -2037,8 +2066,7 @@
 
     if (index < 3) {
       const labelClass = `marker-label rank-${index + 1}`;
-      const rankPrefix = index === 0 ? '🔥 ' : '';
-      const labelContent = `<div class="${labelClass}">${rankPrefix}${place.place_name}</div>`;
+      const labelContent = `<div class="${labelClass}">${place.place_name}</div>`;
       const labelOverlay = new kakao.maps.CustomOverlay({
         position: position, content: labelContent, yAnchor: 2.4, zIndex: 3
       });
@@ -2047,7 +2075,7 @@
     }
 
     let rankBadge = '';
-    if (index === 0) rankBadge = '<span class="infowindow-rank">🔥 HOT 1위</span>';
+    if (index === 0) rankBadge = '<span class="infowindow-rank">1위</span>';
     else if (index < 5) rankBadge = `<span class="infowindow-rank">상위 ${index + 1}위</span>`;
     else rankBadge = `<span class="infowindow-rank normal">${index + 1}위</span>`;
 
@@ -2077,9 +2105,9 @@
       <div class="infowindow-content">
         ${rankBadge}${sourceBadge}
         <div class="infowindow-name">${place.place_name}</div>
-        <div class="infowindow-category">📍 ${categoryName}</div>
+        <div class="infowindow-category">${categoryName}</div>
         <div class="infowindow-addr">${place.road_address_name || place.address_name}</div>
-        ${place.phone ? `<a href="tel:${place.phone}" class="infowindow-phone">📞 ${place.phone}</a>` : ''}
+        ${place.phone ? `<a href="tel:${place.phone}" class="infowindow-phone">${place.phone}</a>` : ''}
         <div class="infowindow-actions">
           <a href="${detailUrl}" target="_blank" class="infowindow-btn primary">사진·후기 보기</a>
           <a href="${directionUrl}" target="_blank" class="infowindow-btn secondary">길찾기</a>
@@ -2096,18 +2124,18 @@
   }
 
   function createMarkerImage(index) {
-    let fillColor, size, hasFire, glowOpacity, innerSize;
+    let fillColor, size, glowOpacity, innerSize, hasRing;
     
     if (index === 0) {
-      fillColor = '#FF5252'; size = 42; hasFire = true; glowOpacity = 0.5; innerSize = 9;
+      fillColor = '#FF5252'; size = 44; glowOpacity = 0.5; innerSize = 9; hasRing = true;
     } else if (index === 1) {
-      fillColor = '#FF7575'; size = 36; hasFire = false; glowOpacity = 0.3; innerSize = 7;
+      fillColor = '#FF7575'; size = 36; glowOpacity = 0.3; innerSize = 7; hasRing = false;
     } else if (index < 5) {
-      fillColor = '#FF7575'; size = 34; hasFire = false; glowOpacity = 0.2; innerSize = 7;
+      fillColor = '#FF7575'; size = 34; glowOpacity = 0.2; innerSize = 7; hasRing = false;
     } else if (index < 10) {
-      fillColor = '#B82822'; size = 30; hasFire = false; glowOpacity = 0; innerSize = 6;
+      fillColor = '#B82822'; size = 30; glowOpacity = 0; innerSize = 6; hasRing = false;
     } else {
-      fillColor = '#8B95A1'; size = 28; hasFire = false; glowOpacity = 0; innerSize = 6;
+      fillColor = '#8B95A1'; size = 28; glowOpacity = 0; innerSize = 6; hasRing = false;
     }
     
     const totalHeight = size + 10;
@@ -2118,7 +2146,7 @@
         <path d="M16 2 C8 2 2 8 2 16 C2 26 16 38 16 38 C16 38 30 26 30 16 C30 8 24 2 16 2 Z" 
               fill="${fillColor}" stroke="#FFFFFF" stroke-width="2.5"/>
         <circle cx="${cx}" cy="16" r="${innerSize}" fill="#FFFFFF"/>
-        ${hasFire ? `<text x="${cx}" y="20" text-anchor="middle" font-size="11" font-weight="bold">🔥</text>` : ''}
+        ${hasRing ? `<circle cx="${cx}" cy="16" r="${innerSize - 3}" fill="${fillColor}"/>` : ''}
       </svg>`;
     const dataURL = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
     return new kakao.maps.MarkerImage(dataURL, new kakao.maps.Size(size, totalHeight),
