@@ -2151,7 +2151,7 @@
   // 여러 키워드로 검색하고 결과 합쳐서 반환
   // ============ 네이버 검색 (Netlify Function 호출) ============
   function searchNaver(keyword) {
-    return fetch(`/.netlify/functions/naver-search?query=${encodeURIComponent(keyword)}`)
+    return fetch(`/api/naver-search?query=${encodeURIComponent(keyword)}`)
       .then(response => {
         if (!response.ok) throw new Error('네이버 검색 실패');
         return response.json();
