@@ -120,18 +120,18 @@
   .hero-content {
     position: relative;
     z-index: 2;
-    padding: 48px 32px 70px;
-    max-width: 720px;
+    padding: 48px 48px 70px;
+    max-width: 1120px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 16px;
+    gap: 24px;
   }
-  .hero-text { flex: 1; max-width: 48%; }
-  /* 한식이 캐릭터 - 우측에 또렷하게 */
+  .hero-text { flex-shrink: 0; }
+  /* 한식이 캐릭터 - 우측에 또렷하게, 더 크게 */
   .hero-mascot-bg {
-    width: 300px;
+    width: 360px;
     height: auto;
     flex-shrink: 0;
     filter: drop-shadow(0 8px 20px rgba(0,0,0,0.2));
@@ -178,16 +178,15 @@
   @media (max-width: 768px) {
     .hero { min-height: 340px; }
     .hero-content { padding: 36px 18px 80px; gap: 8px; }
-    .hero-text { max-width: 52%; }
     .hero-slogan .big { font-size: 44px; letter-spacing: -1.5px; }
     .hero-slogan .small { font-size: 17px; }
     .hero-desc { font-size: 12px; }
-    .hero-mascot-bg { width: 175px; }
+    .hero-mascot-bg { width: 190px; }
   }
   @media (max-width: 480px) {
     .hero-slogan .big { font-size: 38px; }
     .hero-slogan .small { font-size: 15px; }
-    .hero-mascot-bg { width: 140px; }
+    .hero-mascot-bg { width: 150px; }
   }
 
   /* SEARCH BAR (overlapping hero) */
@@ -791,7 +790,7 @@
     background: var(--white);
     border: 2px solid var(--red);
     color: var(--black);
-    padding: 5px 11px;
+    padding: 5px 12px;
     border-radius: 999px;
     font-size: 11px;
     font-weight: 800;
@@ -802,7 +801,7 @@
     transform: translateY(-100%) translateX(-50%);
     margin-top: -10px;
     margin-left: 50%;
-    max-width: 140px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
