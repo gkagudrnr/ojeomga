@@ -786,40 +786,7 @@
   }
   .infowindow-btn.secondary:hover { background: var(--gray-300); }
   
-  .marker-label {
-    background: var(--white);
-    border: 2px solid var(--red);
-    color: var(--black);
-    padding: 5px 12px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 800;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    font-family: 'Pretendard', sans-serif;
-    pointer-events: none;
-    transform: translateY(-100%) translateX(-50%);
-    margin-top: -10px;
-    margin-left: 50%;
-    max-width: 200px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  .marker-label.rank-1 {
-    background: #D4A017;
-    color: #FFFFFF;
-    border-color: #8B6914;
-  }
-  .marker-label.rank-2 {
-    background: #A8A8A8;
-    color: #FFFFFF;
-    border-color: #6E6E6E;
-  }
-  .marker-label.rank-3 {
-    background: #B87333;
-    color: #FFFFFF;
-    border-color: #7A4A20;
-  }
+  /* 마커 이름 라벨 제거됨 - 깃발 마커만 사용 (가게 이름은 클릭 시 정보창에서 확인) */
 
   .map-search-info {
     margin-top: 12px;
@@ -2303,16 +2270,8 @@
     });
     markers.push(marker);
 
-    // A안: 1등만 이름 라벨 표시, 나머지는 깃발 마커만 (지도 가독성 개선)
-    if (index === 0) {
-      const labelClass = `marker-label rank-1`;
-      const labelContent = `<div class="${labelClass}">${place.place_name}</div>`;
-      const labelOverlay = new kakao.maps.CustomOverlay({
-        position: position, content: labelContent, yAnchor: 2.4, zIndex: 3
-      });
-      labelOverlay.setMap(map);
-      customOverlays.push(labelOverlay);
-    }
+    // 이름 라벨(둥근 말풍선) 제거 - 깃발 마커만 표시 (순위는 깃발 색·숫자로 구분)
+    // 가게 이름은 마커 클릭 시 정보창에서 확인
 
     let rankBadge = '';
     if (index === 0) rankBadge = '<span class="infowindow-rank gold">1등</span>';
