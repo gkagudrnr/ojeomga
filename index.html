@@ -2303,8 +2303,9 @@
     });
     markers.push(marker);
 
-    if (index < 3) {
-      const labelClass = `marker-label rank-${index + 1}`;
+    // A안: 1등만 이름 라벨 표시, 나머지는 깃발 마커만 (지도 가독성 개선)
+    if (index === 0) {
+      const labelClass = `marker-label rank-1`;
       const labelContent = `<div class="${labelClass}">${place.place_name}</div>`;
       const labelOverlay = new kakao.maps.CustomOverlay({
         position: position, content: labelContent, yAnchor: 2.4, zIndex: 3
